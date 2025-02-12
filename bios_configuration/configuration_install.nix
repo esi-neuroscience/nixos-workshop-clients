@@ -11,7 +11,7 @@
     fsType = "ext4";  # Use the filesystem type that you formatted with (ext4)
   };
 
-  # Networking configuration (static IP)
+  # Networking configuration
   networking.networkmanager.enable = true;
   networking.wireless.enable = false;
   networking.interfaces.<your-network-interface>.useDHCP = true;
