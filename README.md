@@ -15,8 +15,10 @@ You should also always be careful when installing a bootable OS onto your laptop
 
 Nix needs to be installed on the laptop you want to build the ISO file on, as the creation of the ISO file is dependent on the build commands from nix. 
 
+Under your account (not as root) run:
+
 ```{bash}
-sh <(curl -L https://nixos.org/nix/install)>
+sh <(curl -L https://nixos.org/nix/install)
 ```
 
 This provides the nix installation, which you can activate using:
@@ -26,8 +28,9 @@ This provides the nix installation, which you can activate using:
 
 Now you should have the nix commands available. 
 
-For an iso file containing, a basic user account with no root permissions, a second account that does have sudo permissions, an automated login for the basic account, network setup, GNOME, and any specific packages you need, you can use the file [configuration_iso.nix](configuration_iso.nix) as a starting point, which is for a standard setup. Download and save it as `configuration.nix`. 
+For an iso file containing, a basic user account with no root permissions, a second account that does have sudo permissions, an automated login for the basic account, network setup, GNOME, and any specific packages you need, you can use the file [configuration_iso.nix](configuration_iso.nix) as a starting point, which is for a standard setup. Download and save it as `configuration.nix` inside a directory where you will also want to store the symlinked iso image. 
 
+## Modifying the config
 You can then modify it to fit your needs. The following explained settings are all within the example `configuration_iso.nix` file. In the example, a basic user account called `cobic` is defined, you can modify that by changing the line:
 
 ```{nix}
@@ -72,10 +75,14 @@ It is usually somewhere like `/dev/sdb` or something similar, it should be clear
 You can generate the ISO image, in the same directory as where you have the `configuration.nix` file, using the following command:
 
 ```{bash}
-NIX_PATH=nixpkgs=https://github.com/NixOS/nixpkgs/archive/74e2faf5965a12e8fa5cff799b1b19c6cd26b0e3.tar.gz nix-shell -p nixos-generators --run "nixos-generate --format iso --configuration ./configuration.nix -o nix_config"
+NIX_PATH=nixpkgs=https://github.com/NixOS/nixpkgs/archive/<branch-name>.tar.gz nix-shell -p nixos-generators --run "nixos-generate --format iso --configuration ./configuration.nix -o nix_config"
 ```
 
-In this case the iso file is symlinked with the name `nix_config`, which points to the `.iso` file that is located in the `/nix/store` directory. 
+You should select a branch name, based on the version that suits your requirements best. 
+
+If the installation of the nix commands or the generation of the iso image does not work as expected, there is an alternative method. It is possible to download the latest iso image from [https://nixos.org/download/](https://nixos.org/download/) for either the graphical or command line interfaces. Once you have installed the NixOS it is also possible to make changes to the configuration file, within the installation, at a later point.
+
+In the case of building the iso file using github branch, the iso image will be symlinked with the name `nix_config`, which points to the `.iso` file that is located in the `/nix/store` directory. 
 
 
 Once you usb is empty, making it the bootable ISO will overwrite everything on it so backup important information, you can unmount the USB.
@@ -98,5 +105,5 @@ sync
 
 If you have a legacy boot system, you can find the configuration files [here](bios_configuration) and follow the steps in the [README](bios_configuration/README.md) linked.
 
-Otherwise if you have a UEFI boot system, you can find the configuraiton files [here](uefi_configuration) and follow the steps in the [README](uefi_configuration/README.md) linked.
+Otherwise if you have a UEFI boot system, you can find the configuration files [here](uefi_configuration) and follow the steps in the [README](uefi_configuration/README.md) linked.
 
