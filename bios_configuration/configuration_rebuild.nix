@@ -48,7 +48,9 @@
   # Packages to install (example: GNOME, TurboVNC)
   environment.systemPackages = with pkgs; [
     turbovnc
-  ];
+    vim
+    git
+    ];
 
   # GNOME services
   services.xserver.enable = true;
